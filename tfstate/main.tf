@@ -1,6 +1,6 @@
 locals {
-  region      = "East US"
-  environment = "demo"
+  region      = "East US 2"
+  environment = "prod"
   name        = "skaf"
   additional_tags = {
     Owner      = "organization_name"
@@ -10,7 +10,7 @@ locals {
 }
 
 module "backend" {
-  source                                = "../modules/tfstate"
+  source                                = "../modules/terraform-azure-tfstate"
   resource_group_name                   = local.name
   storage_account_name                  = local.name
   storage_container_name                = "tfstate" # unique storage container name
