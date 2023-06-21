@@ -1,3 +1,61 @@
+## Terraform AKS Reference
+
+Terraform reference to deploy a production-ready AKS (Azure Kubernetes Service) cluster. This reference takes care of provisioning a secure Azure Virtual Network (VNet), deploy an AKS cluster, and configure it with required resources, controllers, and utilities to start deploying applications.
+
+## Requirements and Prerequisites
+
+1. An Azure account
+2. A system with [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) and [kubectl](https://kubernetes.io/docs/tasks/tools/) installed
+
+This repository contains Terraform configuration files for deploying a set of modules in a specific order. The tfstate module must be deployed first, followed by the main module.
+
+## Deploying the tfstate Module
+
+The tfstate module is used for storing the Terraform state file remotely, which is a recommended practice to ensure consistency and collaboration among team members.
+
+To deploy the tfstate module, navigate to the **tfstate** directory and run the following commands:
+
+1. terraform init
+2. terraform plan
+3. terraform apply
+
+Once you have provided the required input, Terraform will create the necessary resources for the tfstate module.
+
+## Deploying the AKS Cluster
+
+After the tfstate module has been deployed, you can deploy the AKS cluster setup. Creating an AKS cluster involves several steps, including setting up an Azure Virtual Network (VNet), creating an AKS cluster, and configuring an AKS node pool.
+
+### VNet
+
+The [Azure/vnet/azurerm](https://registry.terraform.io/modules/azure/vnet/azurerm/latest) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
+
+The module can be used to create a new VNet along with its associated resources such as subnets, route tables, security groups, and network security groups (NSG). It offers a simplified and standardized way to create VNet infrastructure, while also providing flexibility to customize VNet resources based on specific requirements.
+
+The [Azure/vnet/azurerm](https://registry.terraform.io/modules/azure/vnet/azurerm/latest) module offers a range of configuration options, including the ability to specify CIDR blocks for the VNet and subnet ranges, assign names and tags to VNet resources, enable DNS support, and configure network security groups. Additionally, the module provides pre-configured modules for creating subnets in different availability zones (AZs) and associating NSGs.
+
+By using this module, Azure users can save time and effort in setting up VNet infrastructure and ensure that their VNets are created in a consistent and reproducible manner. The module is provided by Microsoft Azure and is actively maintained.
+
+### AKS
+
+The [Azure/aks/azurerm](https://registry.terraform.io/modules/azure/aks/azurerm/latest) module available on the Terraform Registry is designed to create and manage an AKS (Azure Kubernetes Service) cluster in Microsoft Azure.
+
+The module provides a simplified and standardized way to create and manage the Kubernetes control plane and worker nodes in AKS. It automates the process of creating the necessary AKS resources such as resource groups, virtual networks, security groups, and the AKS cluster itself.
+
+The [Azure/aks/azurerm](https://registry.terraform.io/modules/azure/aks/azurerm/latest) module offers a range of configuration options, such as the ability to specify the number of worker nodes, VM sizes, and Kubernetes version. It also provides pre-configured modules for configuring node pools with different VM sizes, enabling monitoring and logging, and integrating with Azure Container Registry.
+
+By using this module, Azure users can set up a Kubernetes cluster on AKS in a simple, efficient, and reproducible manner. It also ensures that the AKS cluster is created with best practices in mind and that it is secured according to industry standards. The module is provided by Microsoft Azure and is actively maintained.
+
+### AKS Add-ons
+
+The [Azure/aks-subnet/azurerm](https://registry.terraform.io/modules/azure/aks-subnet/azurerm/latest) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
+
+The module provides a simplified and standardized way to create and manage subnets for AKS add-ons such as Azure CNI (Container Networking Interface), Azure Firewall, and Azure Application Gateway. It automates the process of creating the necessary subnets and associating them with the AKS cluster.
+
+By using this module, Azure users can configure AKS add-ons in a consistent and reproducible manner. It ensures that the subnets are created with the appropriate configurations and that they are integrated seamlessly with the AKS cluster. The module is provided by Microsoft Azure and is actively maintained.
+
+# terraform-aks-example
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -47,3 +105,4 @@ No inputs.
 | <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | ID of the Vnet |
 | <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | The Name of the newly created vNet |
 | <a name="output_vnet_subnets_name_id"></a> [vnet\_subnets\_name\_id](#output\_vnet\_subnets\_name\_id) | Can be queried subnet-id by subnet name by using lookup(module.vnet.vnet\_subnets\_name\_id, subnet1) |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

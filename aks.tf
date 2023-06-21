@@ -64,3 +64,26 @@ module "aks_node_pool" {
   kubernetes_version         = local.k8s_version
   subnet_id                  = module.vnet.private_subnets
 }
+
+module "eks_bootstrap" {
+  depends_on = [ module.aks_cluster, module.aks_node_pool  ]
+  source     = "./modules/terraform-azure-aks-bootstrap"
+  
+  environment                                   = local.environment
+  name                                          = local.name
+  aks_cluster_name                              = module.aks_cluster.cluster_name
+  resource_group_name                           = azurerm_resource_group.terraform_infra.name
+  resource_group_location                       = azurerm_resource_group.terraform_infra.location
+  single_az_sc_config                           = [{ name = "infra-service-sc", zone = "1" }]
+  cert_manager_letsencrypt_email                = "email@example.com"
+  enable_single_az_storage_class                = true
+  create_service_monitor_crd                    = true
+  enable_reloader                               = true
+  enable_metrics_server                         = true
+  enable_ingress_nginx                          = true
+  cert_manager_enabled                          = true
+  cert_manager_install_letsencrypt_http_issuers = true
+  enable_external_secrets                       = true
+  enable_keda                                   = true
+  enable_istio                                  = false
+}
