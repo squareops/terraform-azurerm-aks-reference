@@ -68,7 +68,7 @@ module "aks_node_pool" {
 module "eks_bootstrap" {
   depends_on = [ module.aks_cluster, module.aks_node_pool  ]
   source     = "./modules/terraform-azure-aks-bootstrap"
-  
+
   environment                                   = local.environment
   name                                          = local.name
   aks_cluster_name                              = module.aks_cluster.cluster_name
