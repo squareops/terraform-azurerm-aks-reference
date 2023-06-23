@@ -1,5 +1,5 @@
 locals {
-  region      = "East US 2"
+  region      = "East US"
   environment = "prod"
   name        = "skaf"
   additional_tags = {

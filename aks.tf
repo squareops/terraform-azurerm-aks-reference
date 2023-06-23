@@ -16,7 +16,7 @@ module "aks_cluster" {
   user_assigned_identity_id         = azurerm_user_assigned_identity.identity.id
   principal_id                      = azurerm_user_assigned_identity.identity.principal_id
   agents_count                      = "1" # per node pool
-  agents_size                       = ["Standard_B2s", "Standard_DS2_v2"]  # node pool vm sizes
+  agents_size                       = ["Standard_DS2_v2", "Standard_DS2_v2"]  # node pool vm sizes
   network_plugin                    = local.network_plugin
   net_profile_dns_service_ip        = "192.168.0.10" # IP address within the Kubernetes service address range that will be used by cluster service discovery. Don't use the first IP address in your address range. The first address in your subnet range is used for the kubernetes.default.svc.cluster.local address.
   net_profile_pod_cidr              = "10.244.0.0/16" # for aks pods cidr
@@ -28,7 +28,7 @@ module "aks_cluster" {
   agents_min_count                  = "1"
   agents_max_count                  = "3"
   enable_node_public_ip             = "false" # If we want to create public nodes set this value "true"
-  agents_availability_zones         = ["1", "2", "3"] # Applies to all the regions except Central India
+  agents_availability_zones         = ["1", "2"] # Applies to all the regions except Central India
   rbac_enabled                      = "true"
   oidc_issuer                       = "true"
   agents_max_pods                   = "58"
@@ -54,7 +54,7 @@ module "aks_cluster" {
 }
 
 module "aks_node_pool" {
-  depends_on = [module.aks_cluster]
+  depends_on = [module.vnet, module.aks_cluster]
   source     = "./modules/aks_node_pool"
 
   node_pool                  = {}
@@ -65,8 +65,8 @@ module "aks_node_pool" {
   subnet_id                  = module.vnet.private_subnets
 }
 
-module "eks_bootstrap" {
-  depends_on = [ module.aks_cluster, module.aks_node_pool  ]
+module "aks_bootstrap" {
+  depends_on = [module.vnet, module.aks_cluster, module.aks_node_pool  ]
   source     = "./modules/terraform-azure-aks-bootstrap"
 
   environment                                   = local.environment
@@ -77,10 +77,10 @@ module "eks_bootstrap" {
   single_az_sc_config                           = [{ name = "infra-service-sc", zone = "1" }]
   cert_manager_letsencrypt_email                = "email@example.com"
   enable_single_az_storage_class                = true
-  create_service_monitor_crd                    = true
+  service_monitor_crd_enabled                   = true
   enable_reloader                               = true
-  enable_metrics_server                         = true
   enable_ingress_nginx                          = true
+  enable_internal_ingress_nginx                 = false
   cert_manager_enabled                          = true
   cert_manager_install_letsencrypt_http_issuers = true
   enable_external_secrets                       = true
