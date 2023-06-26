@@ -20,8 +20,8 @@ variable "name" {
 }
 variable "aks_cluster_name" {
   description = "Fetch Cluster ID of the cluster"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 variable "enable_keda" {
   description = "Enable KEDA Event-based autoscaler add-on"
@@ -47,11 +47,6 @@ variable "cert_manager_letsencrypt_email" {
   description = "Enter cert manager email"
   default     = "anoushka@squareops.com"
   type        = string
-}
-variable "create_service_monitor_crd" {
-  description = "Enable Service MOnitor for metric monitoring"
-  default     = false
-  type        = bool
 }
 variable "ingress_nginx_version" {
   description = "Specify the version of the nginx ingress"

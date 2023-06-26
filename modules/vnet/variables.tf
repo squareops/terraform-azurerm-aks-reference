@@ -254,6 +254,7 @@ variable "public_ip_availability_zone_vpn" {
   default     = []
 }
 
+
 # variable "ddos_protection_plan" {
 #   description = "The set of DDoS protection plan configuration"
 #   type = object({

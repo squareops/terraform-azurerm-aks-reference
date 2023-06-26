@@ -18,10 +18,13 @@ module "aks_cluster" {
   agents_count                      = "1" # per node pool
   agents_size                       = ["Standard_DS2_v2", "Standard_DS2_v2"]  # node pool vm sizes
   network_plugin                    = local.network_plugin
-  net_profile_dns_service_ip        = "192.168.0.10" # IP address within the Kubernetes service address range that will be used by cluster service discovery. Don't use the first IP address in your address range. The first address in your subnet range is used for the kubernetes.default.svc.cluster.local address.
+  # IP address within the Kubernetes service address range that will be used by cluster service discovery. Don't use the first IP address in your address range. The first address in your subnet range is used for the kubernetes.default.svc.cluster.local address.
+  net_profile_dns_service_ip        = "192.168.0.10"
   net_profile_pod_cidr              = "10.244.0.0/16" # for aks pods cidr
-  net_profile_docker_bridge_cidr    = "172.17.0.1/16" # It's required to select a CIDR for the Docker bridge network address because otherwise Docker will pick a subnet automatically, which could conflict with other CIDRs. You must pick an address space that doesn't collide with the rest of the CIDRs on your networks, including the cluster's service CIDR and pod CIDR. Default of 172.17.0.1/16.
-  net_profile_service_cidr          = "192.168.0.0/16" # This range shouldn't be used by any network element on or connected to this virtual network. Service address CIDR must be smaller than /12. You can reuse this range across different AKS clusters.
+  # It's required to select a CIDR for the Docker bridge network address because otherwise Docker will pick a subnet automatically, which could conflict with other CIDRs. You must pick an address space that doesn't collide with the rest of the CIDRs on your networks, including the cluster's service CIDR and pod CIDR. Default of 172.17.0.1/16.
+  net_profile_docker_bridge_cidr    = "172.17.0.1/16"
+  # This range shouldn't be used by any network element on or connected to this virtual network. Service address CIDR must be smaller than /12. You can reuse this range across different AKS clusters.
+  net_profile_service_cidr          = "192.168.0.0/16"
   agents_pool_name                  = [format("%sinfra", local.name), format("%sapp", local.name)]
   os_disk_size_gb                   = "30"
   enable_auto_scaling               = "true"
@@ -32,7 +35,8 @@ module "aks_cluster" {
   rbac_enabled                      = "true"
   oidc_issuer                       = "true"
   agents_max_pods                   = "58"
-  resource_group_name               = azurerm_resource_group.terraform_infra.name
+  create_resource_group             = false  # Enable if you want to create a seperate resource group for AKS cluster. Not recommended for running AKS bootstrap.
+  existing_resource_group_name      = azurerm_resource_group.terraform_infra.name
   resource_group_location           = azurerm_resource_group.terraform_infra.location
   environment                       = local.environment
   name                              = format("%s-aks", local.name)

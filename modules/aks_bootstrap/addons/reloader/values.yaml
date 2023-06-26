@@ -40,7 +40,7 @@ reloader:
     labels: 
       release: prometheus-operator
 
-
+  
   podDisruptionBudget:
     enabled: true
     minAvailable: 1

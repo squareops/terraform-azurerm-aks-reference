@@ -1,4 +1,3 @@
-# OPEN: Default label needs to be removed from gp2 storageclass in order to make gp3 as default choice for EBS volume provisioning.
 resource "null_resource" "get_kubeconfig" {
 
   provisioner "local-exec" {
@@ -7,15 +6,14 @@ resource "null_resource" "get_kubeconfig" {
 }
 
 module "service_monitor_crd" {
-  depends_on = [ null_resource.get_kubeconfig ]
   source = "./addons/service_monitor_crd"
   count  = var.service_monitor_crd_enabled ? 1 : 0
 }
 
 module "single_az_sc" {
-  depends_on = [ null_resource.get_kubeconfig, module.service_monitor_crd ]
   for_each                     = { for sc in var.single_az_sc_config : sc.name => sc }
   source                       = "./addons/azure-disk-storage-class"
+  depends_on                   = [module.service_monitor_crd, null_resource.get_kubeconfig]
   single_az_storage_class      = var.enable_single_az_storage_class
   single_az_storage_class_name = each.value.name
   zone                         = each.value.zone
@@ -32,7 +30,7 @@ module "ingress_nginx" {
   count                  = var.enable_ingress_nginx ? 1 : 0
   environment            = var.environment
   name                   = var.name
-  enable_service_monitor = var.create_service_monitor_crd
+  enable_service_monitor = var.service_monitor_crd_enabled
   ingress_nginx_version  = var.ingress_nginx_version
 }
 
@@ -45,15 +43,15 @@ data "kubernetes_service" "nginx-ingress" {
 }
 
 resource "kubernetes_namespace" "internal_nginx" {
-  depends_on = [ null_resource.get_kubeconfig ]
-  count = var.enable_internal_ingress_nginx ? 1 : 0
+  count      = var.enable_internal_ingress_nginx ? 1 : 0
+  depends_on = [module.service_monitor_crd, null_resource.get_kubeconfig]
   metadata {
     name = "internal-ingress-nginx"
   }
 }
 
 resource "helm_release" "internal_nginx" {
-  depends_on = [kubernetes_namespace.internal_nginx, null_resource.get_kubeconfig]
+  depends_on = [module.service_monitor_crd, null_resource.get_kubeconfig]
   count      = var.enable_internal_ingress_nginx ? 1 : 0
   name       = "internal-ingress-nginx"
   chart      = "ingress-nginx"
@@ -68,7 +66,7 @@ resource "helm_release" "internal_nginx" {
 }
 
 data "kubernetes_service" "internal-nginx-ingress" {
-  depends_on = [helm_release.internal_nginx, null_resource.get_kubeconfig]
+  depends_on = [module.service_monitor_crd, null_resource.get_kubeconfig]
   metadata {
     name      = "internal-ingress-nginx-controller"
     namespace = "internal-ingress-nginx"
@@ -81,12 +79,12 @@ module "cert_manager" {
   count                  = var.cert_manager_enabled ? 1 : 0
   environment            = var.environment
   name                   = var.name
-  enable_service_monitor = var.create_service_monitor_crd
+  enable_service_monitor = var.service_monitor_crd_enabled
   cert_manager_version   = var.cert_manager_version
 }
 
 resource "helm_release" "cert_manager_le_http" {
-  depends_on = [module.cert_manager, null_resource.get_kubeconfig]
+  depends_on = [module.service_monitor_crd, null_resource.get_kubeconfig]
   count      = var.cert_manager_install_letsencrypt_http_issuers ? 1 : 0
   name       = "cert-manager-le-http"
   chart      = "${path.module}/addons/cert-manager-le-http"
@@ -107,7 +105,7 @@ module "external_secrets" {
   name                    = var.name
   resource_group_location = var.resource_group_location
   resource_group_name     = var.resource_group_name
-  enable_service_monitor  = var.create_service_monitor_crd
+  enable_service_monitor  = var.service_monitor_crd_enabled
   cluster_issuer_url      = data.azurerm_kubernetes_cluster.aks_cluster.oidc_issuer_url
 }
 
@@ -122,7 +120,7 @@ module "reloader" {
   depends_on             = [module.service_monitor_crd, null_resource.get_kubeconfig]
   count                  = var.enable_reloader ? 1 : 0
   reloader_version       = var.reloader_version
-  enable_service_monitor = var.create_service_monitor_crd
+  enable_service_monitor = var.service_monitor_crd_enabled
 }
 
 module "keda" {
@@ -131,6 +129,6 @@ module "keda" {
   count                  = var.enable_keda ? 1 : 0
   environment            = var.environment
   name                   = var.name
-  enable_service_monitor = var.create_service_monitor_crd
+  enable_service_monitor = var.service_monitor_crd_enabled
   keda_version           = var.keda_version
 }
