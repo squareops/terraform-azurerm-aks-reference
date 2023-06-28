@@ -25,6 +25,12 @@ Once you have provided the required input, Terraform will create the necessary r
 
 After the tfstate module has been deployed, you can deploy the AKS cluster setup. Creating an AKS cluster involves several steps, including setting up an Azure Virtual Network (VNet), creating an AKS cluster, and configuring an AKS node pool.
 
+**Initialize Terraform:** Open a terminal or command prompt and navigate to your project directory. Run the command `terraform init` to initialize Terraform in the project directory. This command downloads the necessary provider plugins and sets up the backend configuration.
+
+**Plan the Changes:** Execute `terraform plan` to generate an execution plan. Terraform analyzes your code and infrastructure state to determine the actions it will take. Review the plan output to understand the changes that will occur when applying the Terraform configuration.
+
+**Apply the Changes:** Run `terraform apply` to apply the changes defined in your Terraform code. Terraform will create, modify, or destroy resources as necessary to achieve the desired state. Confirm the changes by typing `yes` when prompted.
+
 ### VNet
 
 The [squareops/vnet/azure](https://registry.terraform.io/modules/azure/vnet/azurerm/latest) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
