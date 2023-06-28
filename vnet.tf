@@ -8,8 +8,8 @@ module "vnet" {
   create_public_subnets         = true
   create_private_subnets        = true
   create_database_subnets       = false
-  num_public_subnets            = "2"
-  num_private_subnets           = "2"
+  num_public_subnets            = "1"
+  num_private_subnets           = "1"
   num_database_subnets          = "0"
   create_resource_group         = false
   existing_resource_group_name  = azurerm_resource_group.terraform_infra.name
