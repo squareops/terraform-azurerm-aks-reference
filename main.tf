@@ -8,26 +8,6 @@ provider "azurerm" {
   }
 }
 
-locals {
-  region      = "East US"
-  environment = "prod"
-  name        = "skaf"
-  additional_tags = {
-    Owner      = "Organization_name"
-    Expires    = "Never"
-    Department = "Engineering"
-  }
-  address_space          = "30.10.0.0/16"
-  network_plugin         = "azure"      # You can choose "kubenet(basic)" or "azure(advanced)" refer https://learn.microsoft.com/en-us/azure/aks/concepts-network#kubenet-basic-networking 
-  k8s_version            = "1.26.3"     # Kubernetes cluster version
-}
-
-resource "azurerm_resource_group" "terraform_infra" {
-  name            = format("%s-%s-rg", local.environment, local.name)
-  location        = local.region
-  tags            = local.additional_tags
-}
-
 # Kubernetes provider
 
 provider "kubernetes" {
@@ -48,4 +28,10 @@ provider "helm" {
       cluster_ca_certificate = "${module.aks_cluster.cluster_ca_certificate}"
       config_path = "~/.kube/config"
   }
+}
+
+resource "azurerm_resource_group" "terraform_infra" {
+  name            = format("%s-%s-rg", local.environment, local.name)
+  location        = local.region
+  tags            = local.additional_tags
 }
