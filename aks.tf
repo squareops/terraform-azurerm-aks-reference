@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "ssh_key" {
   name         = "test-ssh-key"
-  key_vault_id = "/subscriptions/f9c51073-abc1-4a5d-8b8f-0b8f57a78829/resourceGroups/prod-skaf-tfstate-rg/providers/Microsoft.KeyVault/vaults/test-ssh-key-skaf"
+  key_vault_id = "/subscriptions/${subscription-id}/resourceGroups/prod-skaf-tfstate-rg/providers/Microsoft.KeyVault/vaults/test-ssh-key-skaf"
 }
 
 # There are two types of managed idetities "System assigned" & "UserAssigned". User-assigned managed identities can be used on multiple resources.
@@ -43,6 +43,7 @@ module "aks_cluster" {
   agents_availability_zones          = ["1", "2", "3"] # Does not applies to all regions please verify the availablity zones for the respective region.
   rbac_enabled                       = true
   oidc_issuer                        = true
+  enable_open_service_mesh           = false   # Add on for the open service mesh (istio)
   private_cluster_enabled            = false  # AKS Cluster endpoint access, Disable for public access
   sku_tier                           = "Free"
   subnet_id                          = module.vnet.private_subnets
@@ -56,7 +57,7 @@ module "aks_cluster" {
   control_plane_monitor_name         = format("%s-%s-aks-control-plane-logs-monitor", local.name, local.environment) # Control plane logs monitoring such as "kube-apiserver", "cloud-controller-manager", "kube-scheduler"
   additional_tags                    = local.additional_tags
 # Managed node pool App
-  create_managed_node_pool_app       = true
+  create_managed_node_pool_app       = false
   managed_node_pool_app_name         = "app"
   managed_node_pool_app_size         = "Standard_DS2_v2"
   enable_auto_scaling_app            = true
@@ -106,6 +107,6 @@ module "aks_bootstrap" {
   cert_manager_enabled                          = true
   cert_manager_install_letsencrypt_http_issuers = true
   enable_external_secrets                       = true
-  enable_keda                                   = true
+  enable_keda                                   = false
   enable_istio                                  = false
 }
