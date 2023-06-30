@@ -33,7 +33,7 @@ module "aks_cluster" {
   default_agent_pool_size            = "Standard_DS2_v2"
   enable_host_encryption             = false
   default_node_labels                = { Infra-Services = "true" }
-  managed_agent_pool_count           = "1"  # number of managed node pools to be created.
+  managed_agent_pool_count           = "0"  # number of managed node pools to be created.
   managed_agent_pool_size            = "Standard_DS2_v2"  # Agent size to mapped to the managed node pools.
   os_disk_size_gb                    = "30"
   enable_auto_scaling                = true
@@ -56,7 +56,7 @@ module "aks_cluster" {
   control_plane_monitor_name         = format("%s-%s-aks-control-plane-logs-monitor", local.name, local.environment) # Control plane logs monitoring such as "kube-apiserver", "cloud-controller-manager", "kube-scheduler"
   additional_tags                    = local.additional_tags
 # Managed node pool App
-  create_managed_node_pool_app       = false
+  create_managed_node_pool_app       = true
   managed_node_pool_app_name         = "app"
   managed_node_pool_app_size         = "Standard_DS2_v2"
   enable_auto_scaling_app            = true
