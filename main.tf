@@ -7,7 +7,7 @@ locals {
     Expires    = "Never"
     Department = "Engineering"
   }
-  address_space          = "30.10.0.0/16"
+  address_space          = "10.20.0.0/16"
   network_plugin         = "azure"      # You can choose "kubenet(basic)" or "azure(advanced)" refer https://learn.microsoft.com/en-us/azure/aks/concepts-network#kubenet-basic-networking 
   k8s_version            = "1.26.3"     # Kubernetes cluster version
 }

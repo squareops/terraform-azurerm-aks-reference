@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "ssh_key" {
   name         = "test-ssh-key"
-  key_vault_id = "/subscriptions/${subscription-id}/resourceGroups/prod-skaf-tfstate-rg/providers/Microsoft.KeyVault/vaults/test-ssh-key-skaf"
+  key_vault_id = "/subscriptions/{subscription-id}/resourceGroups/prod-skaf-tfstate-rg/providers/Microsoft.KeyVault/vaults/test-ssh-key-skaf"
 }
 
 # There are two types of managed idetities "System assigned" & "UserAssigned". User-assigned managed identities can be used on multiple resources.
@@ -12,7 +12,7 @@ resource "azurerm_user_assigned_identity" "identity" {
 
 module "aks_cluster" {
   depends_on = [module.vnet, azurerm_user_assigned_identity.identity]
-  source     = "git::https://github.com/prajwalakhuj/terraform-azure-aks.git?ref=release/v1"
+  source     = "git::https://github.com/sq-ia/terraform-azure-aks.git?ref=release/v1"
 
   name                               = format("%s-aks", local.name)
   environment                        = local.environment
@@ -57,7 +57,7 @@ module "aks_cluster" {
   control_plane_monitor_name         = format("%s-%s-aks-control-plane-logs-monitor", local.name, local.environment) # Control plane logs monitoring such as "kube-apiserver", "cloud-controller-manager", "kube-scheduler"
   additional_tags                    = local.additional_tags
 # Managed node pool App
-  create_managed_node_pool_app       = false
+  create_managed_node_pool_app       = true
   managed_node_pool_app_name         = "app"
   managed_node_pool_app_size         = "Standard_DS2_v2"
   enable_auto_scaling_app            = true
@@ -90,7 +90,7 @@ module "aks_cluster" {
 
 module "aks_bootstrap" {
   depends_on = [module.vnet, module.aks_cluster ]
-  source     = "git::https://github.com/anoushkaakhourysq/terraform-azure-aks-bootstrap.git?ref=release/v1"
+  source     = "git::https://github.com/sq-ia/terraform-azure-aks-bootstrap.git?ref=release/v1"
 
   environment                                   = local.environment
   name                                          = local.name
@@ -107,6 +107,6 @@ module "aks_bootstrap" {
   cert_manager_enabled                          = true
   cert_manager_install_letsencrypt_http_issuers = true
   enable_external_secrets                       = true
-  enable_keda                                   = false
+  enable_keda                                   = true
   enable_istio                                  = false
 }
