@@ -22,7 +22,6 @@ module "aks_cluster" {
   resource_group_location            = azurerm_resource_group.terraform_infra.location
   user_assigned_identity_id          = azurerm_user_assigned_identity.identity.id
   principal_id                       = azurerm_user_assigned_identity.identity.principal_id
-  agents_size                        = ["Standard_DS2_v2", "Standard_DS2_v2"]  # node pool vm sizes in this list (0 for infra, 1 for app )
   network_plugin                     = local.network_plugin
   net_profile_dns_service_ip         = "192.168.0.10" # IP address within the Kubernetes service address range that will be used by cluster service discovery. Don't use the first IP address in your address range. The first address in your subnet range is used for the kubernetes.default.svc.cluster.local address.
   net_profile_pod_cidr               = "10.244.0.0/16" # For aks pods cidr, when choosen "azure" network plugin these value will be passed as null.
@@ -99,7 +98,7 @@ module "aks_bootstrap" {
   resource_group_location                       = azurerm_resource_group.terraform_infra.location
   single_az_sc_config                           = [{ name = "infra-service-sc", zone = "1" }]
   cert_manager_letsencrypt_email                = "prajwal.akhuj@squareops.com"
-  enable_single_az_storage_class                = true
+  single_az_storage_class_enabled               = true
   service_monitor_crd_enabled                   = true
   reloader_enabled                              = true
   ingress_nginx_enabled                         = true
