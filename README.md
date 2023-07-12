@@ -80,7 +80,7 @@ By using this module, Azure users can set up a Kubernetes cluster on AKS in a si
 
 ### AKS Add-ons
 
-The [squareops/aks-bootstrap/azure](https://github.com/sq-ia/terraform-azure-aks-bootstrap/tree/release/v1) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
+The [squareops/aks-addons/azure](https://github.com/sq-ia/terraform-azure-aks-addons/tree/release/v1) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
 
 The module provides a simplified and standardized way to create and manage subnets for AKS add-ons such as Azure CNI (Container Networking Interface), Azure Firewall, and Azure Application Gateway. It automates the process of creating the necessary subnets and associating them with the AKS cluster.
 
@@ -107,7 +107,7 @@ By using this module, Azure users can configure AKS add-ons in a consistent and 
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_addon"></a> [aks\_addon](#module\_aks\_addon) | git::https://github.com/sq-ia/terraform-azure-aks-bootstrap.git | release/v1 |
+| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | git::https://github.com/sq-ia/terraform-azure-aks-addons.git | release/v1 |
 | <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | git::https://github.com/sq-ia/terraform-azure-aks.git | release/v1 |
 | <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | git::https://github.com/sq-ia/terraform-azure-aks.git//modules/managed_node_pools | release/v1 |
 | <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/sq-ia/terraform-azure-vnet.git | release/v1 |
