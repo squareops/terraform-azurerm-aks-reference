@@ -31,7 +31,7 @@ module "aks_cluster" {
   default_agent_pool_count           = "1"
   default_agent_pool_size            = "Standard_DS2_v2"
   host_encryption_enabled            = false
-  default_node_labels                = { Addon-Services = "true" }
+  default_node_labels                = { Addons-Services = "true" }
   os_disk_size_gb                    = 30
   auto_scaling_enabled               = true
   agents_min_count                   = 1
@@ -85,9 +85,9 @@ module "aks_managed_node_pool" {
  }
 }
 
-module "aks_addon" {
+module "aks_addons" {
   depends_on = [module.vnet, module.aks_cluster, aks_managed_node_pool]
-  source     = "git::https://github.com/sq-ia/terraform-azure-aks-bootstrap.git?ref=release/v1"
+  source     = "git::https://github.com/sq-ia/terraform-azure-aks-addons.git?ref=release/v1"
 
   environment                                   = local.environment
   name                                          = local.name
