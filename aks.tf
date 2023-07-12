@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "ssh_key" {
-  name         = "test-ssh-key"
-  key_vault_id = "/subscriptions/{subscription-id}/resourceGroups/prod-skaf-tfstate-rg/providers/Microsoft.KeyVault/vaults/test-ssh-key-skaf"
+  name         = ""
+  key_vault_id = ""
 }
 
 # There are two types of managed idetities "System assigned" & "UserAssigned". User-assigned managed identities can be used on multiple resources.
@@ -31,18 +31,16 @@ module "aks_cluster" {
   default_agent_pool_count           = "1"
   default_agent_pool_size            = "Standard_DS2_v2"
   host_encryption_enabled            = false
-  default_node_labels                = { Infra-Services = "true" }
-  managed_agent_pool_count           = "0"  # number of managed node pools to be created.
-  managed_agent_pool_size            = "Standard_DS2_v2"  # Agent size to mapped to the managed node pools.
-  os_disk_size_gb                    = "30"
+  default_node_labels                = { Addon-Services = "true" }
+  os_disk_size_gb                    = 30
   auto_scaling_enabled               = true
-  agents_min_count                   = "1"
-  agents_max_count                   = "3"
+  agents_min_count                   = 1
+  agents_max_count                   = 2
   node_public_ip_enabled             = false  # If we want to create public nodes set this value "true"
   agents_availability_zones          = ["1", "2", "3"] # Does not applies to all regions please verify the availablity zones for the respective region.
   rbac_enabled                       = true
   oidc_issuer_enabled                = true
-  open_service_mesh_enabled          = false   # Add on for the open service mesh (istio)
+  open_service_mesh_enabled          = false  # Add on for the open service mesh (istio)
   private_cluster_enabled            = false  # AKS Cluster endpoint access, Disable for public access
   sku_tier                           = "Free"
   subnet_id                          = module.vnet.private_subnets
@@ -55,40 +53,40 @@ module "aks_cluster" {
   control_plane_logs_scrape_enabled  = true # Scrapes logs of the aks control plane
   control_plane_monitor_name         = format("%s-%s-aks-control-plane-logs-monitor", local.name, local.environment) # Control plane logs monitoring such as "kube-apiserver", "cloud-controller-manager", "kube-scheduler"
   additional_tags                    = local.additional_tags
-# Managed node pool App
-  create_managed_node_pool_app       = true
-  managed_node_pool_app_name         = "app"
-  managed_node_pool_app_size         = "Standard_DS2_v2"
-  auto_scaling_app_enabled           = true
-  agents_count_app                   = "1"
-  agents_min_count_app               = "1"
-  agents_max_count_app               = "3"
-  agents_availability_zones_app      = ["1", "2"]
-  node_labels_app                    = { App-Services = "true" }
-# Managed node pool Monitor
-  create_managed_node_pool_monitor   = false
-  managed_node_pool_monitor_name     = "monitor"
-  managed_node_pool_monitor_size     = "Standard_DS2_v2"
-  auto_scaling_monitor_enabled       = true
-  agents_count_monitor               = "1"
-  agents_min_count_monitor           = "1"
-  agents_max_count_monitor           = "3"
-  agents_availability_zones_monitor  = ["1", "2"]
-  node_labels_monitor                = { Monitor-Services = "true" }
-# Managed node pool Database
-  create_managed_node_pool_database  = false
-  managed_node_pool_database_name    = "database"
-  managed_node_pool_database_size    = "Standard_DS2_v2"
-  auto_scaling_database_enabled      = true
-  agents_count_database              = "1"
-  agents_min_count_database          = "1"
-  agents_max_count_database          = "3"
-  agents_availability_zones_database = ["1", "2"]
-  node_labels_database               = { Database-Services = "true" }
 }
 
-module "aks_bootstrap" {
-  depends_on = [module.vnet, module.aks_cluster ]
+module "aks_managed_node_pool" {
+  depends_on = [module.aks_cluster]
+  source     = "git::https://github.com/sq-ia/terraform-azure-aks.git//modules/managed_node_pools?ref=release/v1"
+
+  resource_group_name   = azurerm_resource_group.terraform_infra.name
+  orchestrator_version  = local.k8s_version
+  location              = azurerm_resource_group.terraform_infra.location
+  vnet_subnet_id        = module.vnet.private_subnets
+  kubernetes_cluster_id = module.aks_cluster.kubernetes_cluster_id
+  node_pools = {
+    app = {
+      vm_size                  = "Standard_DS2_v2"
+      auto_scaling_enabled     = true
+      os_disk_size_gb          = 50
+      os_disk_type             = "Managed"
+      node_count               = 1
+      min_count                = 1
+      max_count                = 2
+      availability_zones       = ["1", "2", "3"]
+      enable_node_public_ip    = false # if set to true node_public_ip_prefix_id is required
+      node_public_ip_prefix_id = ""
+      node_labels              = { App-service = "true" }
+      node_taints              = ["workload=example:NoSchedule"]
+      host_encryption_enabled  = false
+      max_pods                 = 30
+      agents_tags              = local.additional_tags
+    },
+ }
+}
+
+module "aks_addon" {
+  depends_on = [module.vnet, module.aks_cluster, aks_managed_node_pool]
   source     = "git::https://github.com/sq-ia/terraform-azure-aks-bootstrap.git?ref=release/v1"
 
   environment                                   = local.environment
@@ -97,7 +95,7 @@ module "aks_bootstrap" {
   resource_group_name                           = azurerm_resource_group.terraform_infra.name
   resource_group_location                       = azurerm_resource_group.terraform_infra.location
   single_az_sc_config                           = [{ name = "infra-service-sc", zone = "1" }]
-  cert_manager_letsencrypt_email                = "prajwal.akhuj@squareops.com"
+  cert_manager_letsencrypt_email                = "example@squareops.com"
   single_az_storage_class_enabled               = true
   service_monitor_crd_enabled                   = true
   reloader_enabled                              = true
