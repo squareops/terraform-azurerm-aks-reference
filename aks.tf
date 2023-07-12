@@ -86,7 +86,7 @@ module "aks_managed_node_pool" {
 }
 
 module "aks_addons" {
-  depends_on = [module.vnet, module.aks_cluster, aks_managed_node_pool]
+  depends_on = [module.vnet, module.aks_cluster, module.aks_managed_node_pool]
   source     = "git::https://github.com/sq-ia/terraform-azure-aks-addons.git?ref=release/v1"
 
   environment                                   = local.environment

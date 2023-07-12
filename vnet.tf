@@ -16,6 +16,6 @@ module "vnet" {
   resource_group_location       = local.region
   create_vpn                    = false
   create_nat_gateway            = true
-  enable_logging                = false
+  logging_enabled               = false
   additional_tags               = local.additional_tags
 }
