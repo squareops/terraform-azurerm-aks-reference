@@ -1,6 +1,6 @@
 module "vnet" {
   depends_on = [azurerm_resource_group.terraform_infra]
-  source     = "git::https://github.com/squareops/terraform-azure-vnet.git?ref=main"
+  source     = "squareops/vnet/azurerm"
 
   name                         = local.name
   address_space                = local.address_space
