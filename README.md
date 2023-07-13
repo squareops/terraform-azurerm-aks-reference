@@ -60,27 +60,27 @@ data "azurerm_key_vault_secret" "ssh_key" {
 
 ### VNet
 
-The [squareops/vnet/azure](https://github.com/sq-ia/terraform-azure-vnet/tree/release/v1) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
+The [squareops/vnet/azure](https://github.com/squareops/terraform-azure-vnet/tree/main) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
 
 The module can be used to create a new VNet along with its associated resources such as subnets, route tables, security groups, and network security groups (NSG). It offers a simplified and standardized way to create VNet infrastructure, while also providing flexibility to customize VNet resources based on specific requirements.
 
-The [squareops/vnet/azure](https://github.com/sq-ia/terraform-azure-vnet/tree/release/v1) module offers a range of configuration options, including the ability to specify CIDR blocks for the VNet and subnet ranges, assign names and tags to VNet resources, enable DNS support, and configure network security groups. Additionally, the module provides pre-configured modules for creating subnets in different availability zones (AZs) and associating NSGs.
+The [squareops/vnet/azure](https://github.com/squareops/terraform-azure-vnet/tree/main) module offers a range of configuration options, including the ability to specify CIDR blocks for the VNet and subnet ranges, assign names and tags to VNet resources, enable DNS support, and configure network security groups. Additionally, the module provides pre-configured modules for creating subnets in different availability zones (AZs) and associating NSGs.
 
 By using this module, Azure users can save time and effort in setting up VNet infrastructure and ensure that their VNets are created in a consistent and reproducible manner. The module is provided by Microsoft Azure and is actively maintained.
 
 ### AKS
 
-The [squareops/aks/azure](https://github.com/sq-ia/terraform-azure-aks/tree/release/v1) module available on the Terraform Registry is designed to create and manage an AKS (Azure Kubernetes Service) cluster in Microsoft Azure.
+The [squareops/aks/azure](https://github.com/squareops/terraform-azure-aks/tree/main) module available on the Terraform Registry is designed to create and manage an AKS (Azure Kubernetes Service) cluster in Microsoft Azure.
 
 The module provides a simplified and standardized way to create and manage the Kubernetes control plane and worker nodes in AKS. It automates the process of creating the necessary AKS resources such as resource groups, virtual networks, security groups, and the AKS cluster itself.
 
-The [squareops/aks/azure](https://github.com/sq-ia/terraform-azure-aks/tree/release/v1) module offers a range of configuration options, such as the ability to specify the number of worker nodes, VM sizes, and Kubernetes version. It also provides pre-configured modules for configuring node pools with different VM sizes, enabling monitoring and logging, and integrating with Azure Container Registry.
+The [squareops/aks/azure](https://github.com/squareops/terraform-azure-aks/tree/main) module offers a range of configuration options, such as the ability to specify the number of worker nodes, VM sizes, and Kubernetes version. It also provides pre-configured modules for configuring node pools with different VM sizes, enabling monitoring and logging, and integrating with Azure Container Registry.
 
 By using this module, Azure users can set up a Kubernetes cluster on AKS in a simple, efficient, and reproducible manner. It also ensures that the AKS cluster is created with best practices in mind and that it is secured according to industry standards. The module is provided by Microsoft Azure and is actively maintained.
 
 ### AKS Add-ons
 
-The [squareops/aks-bootstrap/azure](https://github.com/sq-ia/terraform-azure-aks-bootstrap/tree/release/v1) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
+The [squareops/aks-addons/azure](https://github.com/squareops/terraform-azure-aks-addons/tree/main) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
 
 The module provides a simplified and standardized way to create and manage subnets for AKS add-ons such as Azure CNI (Container Networking Interface), Azure Firewall, and Azure Application Gateway. It automates the process of creating the necessary subnets and associating them with the AKS cluster.
 
@@ -107,9 +107,10 @@ By using this module, Azure users can configure AKS add-ons in a consistent and 
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | [squareops/aks/azure](https://github.com/sq-ia/terraform-azure-aks/tree/release/v1) | n/a |
-| <a name="module_aks_bootstrap"></a> [aks\_bootstrap](#module\_aks\_bootstrap) | [squareops/aks-bootstrap/azure](https://github.com/sq-ia/terraform-azure-aks-bootstrap/tree/release/v1) | n/a |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | [squareops/vnet/azure](https://github.com/sq-ia/terraform-azure-vnet/tree/release/v1) | n/a |
+| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | git::https://github.com/squareops/terraform-azure-aks-addons.git | release/v1 |
+| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | git::https://github.com/squareops/terraform-azure-aks.git | release/v1 |
+| <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | git::https://github.com/squareops/terraform-azure-aks.git//modules/managed_node_pools | release/v1 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/squareops/terraform-azure-vnet.git | release/v1 |
 
 ## Resources
 
@@ -117,6 +118,7 @@ By using this module, Azure users can configure AKS add-ons in a consistent and 
 |------|------|
 | [azurerm_resource_group.terraform_infra](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_user_assigned_identity.identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_key_vault_secret.ssh_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 
 ## Inputs
 
@@ -129,9 +131,7 @@ No inputs.
 | <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Kubernetes Cluster Name |
 | <a name="output_default_ng_rg_name"></a> [default\_ng\_rg\_name](#output\_default\_ng\_rg\_name) | Default Node Group Resource Group Name |
 | <a name="output_environment"></a> [environment](#output\_environment) | Environment Name |
-| <a name="output_internall_nginx_ingress_controller_dns_hostname"></a> [internall\_nginx\_ingress\_controller\_dns\_hostname](#output\_internall\_nginx\_ingress\_controller\_dns\_hostname) | NGINX Internal Ingress Controller DNS Hostname |
 | <a name="output_name"></a> [name](#output\_name) | Common Name |
-| <a name="output_nginx_ingress_controller_dns_hostname"></a> [nginx\_ingress\_controller\_dns\_hostname](#output\_nginx\_ingress\_controller\_dns\_hostname) | NGINX Ingress Controller DNS Hostname |
 | <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | Resource Group Name Location |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Resource Group Name |
 | <a name="output_user_assigned_identity_id"></a> [user\_assigned\_identity\_id](#output\_user\_assigned\_identity\_id) | user assigned identity ID for CNI |
