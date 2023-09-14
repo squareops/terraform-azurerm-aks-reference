@@ -12,16 +12,14 @@ Terraform module to create Remote State Storage resources for workload deploymen
 ```hcl
 module "backend" {
   source                    = "squareops/tfstate-asc/azurerm"
-  resource_group_name       = local.name
-  storage_account_name      = local.name
+  resource_group_name       = "skaf"
+  storage_account_name      = "storageaccount"
   storage_container_name    = "tfstate" # unique storage container name
-  azure_key_vault_name      = local.name
-  resource_group_location   = local.region
-  environment               = local.environment
+  resource_group_location   = "eastus"
+  environment               = "prod"
 }
-
 ```
-Refer [examples](https://github.com/squareops/terraform-azurerm-tfstate-asc) for more details.
+Refer [examples](https://github.com/squareops/terraform-azurerm-tfstate-asc/tree/main/examples/complete) for more details.
 
 ## Important Note
 Terraform state locking is a mechanism used to prevent multiple users from simultaneously making changes to the same Terraform state, which could result in conflicts and data loss. A state lock is acquired and maintained by Terraform while it is making changes to the state, and other instances of Terraform are unable to make changes until the lock is released.
