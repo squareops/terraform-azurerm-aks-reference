@@ -47,15 +47,6 @@ By using Azure Blob Storage as the backend for storing the tfstate file, Terrafo
 | [azurerm_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_storage_container_name"></a> [storage\_container\_name](#input\_bucket\_name) | Name of the Storage container to be created. | `string` | `""` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | Specify the type of environment(dev, demo, prod) in which the Storage account, Storage container and resource group will be created. | `string` | `"demo"` | no |
-| <a name="input_region"></a> [region](#input\_region) | Specify the region in which the Storage account, Storage container and resource group will be created. | `string` | `"East US"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Specify the name of the project where Storage account, Storage container and resource group will be created. | `string` | `"skaf"` | no |
-| <a name="input_additional_tags"></a> [additional_tags](#input\_additional_tags) | Specify the tags for the resources such as Storage account, Storage container and resource group will be created. | `string` | `""` | no |
 
 ## Outputs
 
