@@ -95,3 +95,36 @@ We believe that the key to success in the digital age is the ability to deliver 
 We provide [support](https://squareops.com/contact-us/) on all of our projects, no matter how small or large they may be.
 
 You can find more information about our company on this [squareops.com](https://squareops.com/), follow us on [Linkedin](https://www.linkedin.com/company/squareops-technologies-pvt-ltd/), or fill out a [job application](https://squareops.com/careers/). If you have any questions or would like assistance with your cloud strategy and implementation, please don't hesitate to [contact us](https://squareops.com/contact-us/).
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | =3.0.0 |
+
+## Providers
+
+No providers.
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_backend"></a> [backend](#module\_backend) | squareops/tfstate-asc/azurerm | n/a |
+
+## Resources
+
+No resources.
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_terraform_state_resource_group_name"></a> [terraform\_state\_resource\_group\_name](#output\_terraform\_state\_resource\_group\_name) | The name of the resource group where Terraform state is stored |
+| <a name="output_terraform_state_storage_account"></a> [terraform\_state\_storage\_account](#output\_terraform\_state\_storage\_account) | The name of the storage account where Terraform state is stored |
+| <a name="output_terraform_state_storage_container_name"></a> [terraform\_state\_storage\_container\_name](#output\_terraform\_state\_storage\_container\_name) | The name of the storage container where Terraform state is stored |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
