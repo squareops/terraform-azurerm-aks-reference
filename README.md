@@ -60,27 +60,27 @@ data "azurerm_key_vault_secret" "ssh_key" {
 
 ### VNet
 
-The [squareops/vnet/azurerm](https://github.com/squareops/terraform-azure-vnet/tree/main) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
+The [squareops/vnet/azurerm](https://github.com/squareops/terraform-azurerm-vnet/tree/main) module available on the Terraform Registry is designed to create and manage Azure Virtual Network (VNet) resources in Microsoft Azure.
 
 The module can be used to create a new VNet along with its associated resources such as subnets, route tables, security groups, and network security groups (NSG). It offers a simplified and standardized way to create VNet infrastructure, while also providing flexibility to customize VNet resources based on specific requirements.
 
-The [squareops/vnet/azurerm](https://github.com/squareops/terraform-azure-vnet/tree/main) module offers a range of configuration options, including the ability to specify CIDR blocks for the VNet and subnet ranges, assign names and tags to VNet resources, enable DNS support, and configure network security groups. Additionally, the module provides pre-configured modules for creating subnets in different availability zones (AZs) and associating NSGs.
+The [squareops/vnet/azurerm](https://github.com/squareops/terraform-azurerm-vnet/tree/main) module offers a range of configuration options, including the ability to specify CIDR blocks for the VNet and subnet ranges, assign names and tags to VNet resources, enable DNS support, and configure network security groups. Additionally, the module provides pre-configured modules for creating subnets in different availability zones (AZs) and associating NSGs.
 
 By using this module, Azure users can save time and effort in setting up VNet infrastructure and ensure that their VNets are created in a consistent and reproducible manner. The module is provided by Microsoft Azure and is actively maintained.
 
 ### AKS
 
-The [squareops/aks/azurerm](https://github.com/squareops/terraform-azure-aks/tree/main) module available on the Terraform Registry is designed to create and manage an AKS (Azure Kubernetes Service) cluster in Microsoft Azure.
+The [squareops/aks/azurerm](https://github.com/squareops/terraform-azurerm-aks/tree/main) module available on the Terraform Registry is designed to create and manage an AKS (Azure Kubernetes Service) cluster in Microsoft Azure.
 
 The module provides a simplified and standardized way to create and manage the Kubernetes control plane and worker nodes in AKS. It automates the process of creating the necessary AKS resources such as resource groups, virtual networks, security groups, and the AKS cluster itself.
 
-The [squareops/aks/azurerm](https://github.com/squareops/terraform-azure-aks/tree/main) module offers a range of configuration options, such as the ability to specify the number of worker nodes, VM sizes, and Kubernetes version. It also provides pre-configured modules for configuring node pools with different VM sizes, enabling monitoring and logging, and integrating with Azure Container Registry.
+The [squareops/aks/azurerm](https://github.com/squareops/terraform-azurerm-aks/tree/main) module offers a range of configuration options, such as the ability to specify the number of worker nodes, VM sizes, and Kubernetes version. It also provides pre-configured modules for configuring node pools with different VM sizes, enabling monitoring and logging, and integrating with Azure Container Registry.
 
 By using this module, Azure users can set up a Kubernetes cluster on AKS in a simple, efficient, and reproducible manner. It also ensures that the AKS cluster is created with best practices in mind and that it is secured according to industry standards. The module is provided by Microsoft Azure and is actively maintained.
 
 ### AKS Add-ons
 
-The [squareops/aks-addons/azurerm](https://github.com/squareops/terraform-azure-aks-addons/tree/main) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
+The [squareops/aks-addons/azurerm](https://github.com/squareops/terraform-azurerm-aks-addons/tree/main) module available on the Terraform Registry is designed to configure additional subnets for AKS add-ons in Microsoft Azure.
 
 The module provides a simplified and standardized way to create and manage subnets for AKS add-ons such as Azure CNI (Container Networking Interface), Azure Firewall, and Azure Application Gateway. It automates the process of creating the necessary subnets and associating them with the AKS cluster.
 
@@ -101,16 +101,16 @@ By using this module, Azure users can configure AKS add-ons in a consistent and 
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.11.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | squareops/aks-addons/azurerm | release/v1 |
-| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | squareops/aks/azurerm | release/v1 |
-| <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | squareops/aks/azurerm//modules/managed_node_pools | release/v1 |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | squareops/vnet/azurerm | release/v1 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | squareops/vnet/azurerm | n/a |
+| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | squareops/aks/azurerm | n/a |
+| <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | squareops/aks/azurerm//modules/managed_node_pools | n/a |
+| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | squareops/aks-addons/azurerm | n/a |
 
 ## Resources
 
@@ -128,14 +128,14 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Kubernetes Cluster Name |
-| <a name="output_default_ng_rg_name"></a> [default\_ng\_rg\_name](#output\_default\_ng\_rg\_name) | Default Node Group Resource Group Name |
-| <a name="output_environment"></a> [environment](#output\_environment) | Environment Name |
-| <a name="output_name"></a> [name](#output\_name) | Common Name |
-| <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | Resource Group Name Location |
-| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Resource Group Name |
-| <a name="output_user_assigned_identity_id"></a> [user\_assigned\_identity\_id](#output\_user\_assigned\_identity\_id) | user assigned identity ID for CNI |
-| <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | ID of the Vnet |
-| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | The Name of the newly created vNet |
-| <a name="output_vnet_subnets_name_id"></a> [vnet\_subnets\_name\_id](#output\_vnet\_subnets\_name\_id) | Can be queried subnet-id by subnet name by using lookup(module.vnet.vnet\_subnets\_name\_id, subnet1) |
+| <a name="output_name"></a> [name](#output\_name) | The common name of the resource |
+| <a name="output_environment"></a> [environment](#output\_environment) | The name of the environment |
+| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | The name of the Kubernetes cluster |
+| <a name="output_default_ng_rg_name"></a> [default\_ng\_rg\_name](#output\_default\_ng\_rg\_name) | The name of the resource group for the default node group |
+| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | The name of the resource group |
+| <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | The location of the resource group |
+| <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | The ID of the virtual network |
+| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | The name of the virtual network |
+| <a name="output_vnet_subnets_name_id"></a> [vnet\_subnets\_name\_id](#output\_vnet\_subnets\_name\_id) | A map that can be queried to get subnet IDs by subnet names |
+| <a name="output_user_assigned_identity_id"></a> [user\_assigned\_identity\_id](#output\_user\_assigned\_identity\_id) | The ID of the user-assigned identity for CNI |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
