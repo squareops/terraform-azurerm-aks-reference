@@ -101,16 +101,16 @@ By using this module, Azure users can configure AKS add-ons in a consistent and 
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.11.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | squareops/aks-addons/azurerm | release/v1 |
-| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | squareops/aks/azurerm | release/v1 |
-| <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | squareops/aks/azurerm//modules/managed_node_pools | release/v1 |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | squareops/vnet/azurerm | release/v1 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | squareops/vnet/azurerm | n/a |
+| <a name="module_aks_cluster"></a> [aks\_cluster](#module\_aks\_cluster) | squareops/aks/azurerm | n/a |
+| <a name="module_aks_managed_node_pool"></a> [aks\_managed\_node\_pool](#module\_aks\_managed\_node\_pool) | squareops/aks/azurerm//modules/managed_node_pools | n/a |
+| <a name="module_aks_addons"></a> [aks\_addons](#module\_aks\_addons) | squareops/aks-addons/azurerm | n/a |
 
 ## Resources
 
@@ -128,14 +128,14 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | Kubernetes Cluster Name |
-| <a name="output_default_ng_rg_name"></a> [default\_ng\_rg\_name](#output\_default\_ng\_rg\_name) | Default Node Group Resource Group Name |
-| <a name="output_environment"></a> [environment](#output\_environment) | Environment Name |
-| <a name="output_name"></a> [name](#output\_name) | Common Name |
-| <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | Resource Group Name Location |
-| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Resource Group Name |
-| <a name="output_user_assigned_identity_id"></a> [user\_assigned\_identity\_id](#output\_user\_assigned\_identity\_id) | user assigned identity ID for CNI |
-| <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | ID of the Vnet |
-| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | The Name of the newly created vNet |
-| <a name="output_vnet_subnets_name_id"></a> [vnet\_subnets\_name\_id](#output\_vnet\_subnets\_name\_id) | Can be queried subnet-id by subnet name by using lookup(module.vnet.vnet\_subnets\_name\_id, subnet1) |
+| <a name="output_name"></a> [name](#output\_name) | The common name of the resource |
+| <a name="output_environment"></a> [environment](#output\_environment) | The name of the environment |
+| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | The name of the Kubernetes cluster |
+| <a name="output_default_ng_rg_name"></a> [default\_ng\_rg\_name](#output\_default\_ng\_rg\_name) | The name of the resource group for the default node group |
+| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | The name of the resource group |
+| <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | The location of the resource group |
+| <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | The ID of the virtual network |
+| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | The name of the virtual network |
+| <a name="output_vnet_subnets_name_id"></a> [vnet\_subnets\_name\_id](#output\_vnet\_subnets\_name\_id) | A map that can be queried to get subnet IDs by subnet names |
+| <a name="output_user_assigned_identity_id"></a> [user\_assigned\_identity\_id](#output\_user\_assigned\_identity\_id) | The ID of the user-assigned identity for CNI |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
